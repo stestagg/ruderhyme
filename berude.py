@@ -10,9 +10,23 @@ rude_words = [
     "three-inch fool",
     "unable worm",
     "lily-livered",
-    "Tewkesbury mustard",
-    "pigeon-livered",
-    "scurvy companion"
+    "tewkesbury mustard",
+    "pigeon-livered",,
+    'blackguard',
+    "scurvy companion",
+    'blaggard',
+    'scullions',
+    'menial',
+    'scoundrel',
+    'cox-comb',
+    'knave',
+    'churl',
+    'doxy',
+    'glos pautonnier',
+    'skamelar',
+    'mandrake mymmerkin',
+    'hedge-born',
+    'cumberground'
 ]
 
 def find_rude_rhyme(word, cache):
