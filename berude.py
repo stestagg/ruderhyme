@@ -13,7 +13,7 @@ rude_words = [
     "unable worm",
     "lily-livered",
     "tewkesbury mustard",
-    "pigeon-livered",,
+    "pigeon-livered",
     'blackguard',
     "scurvy companion",
     'blaggard',
@@ -34,7 +34,10 @@ rude_words = [
 
 def find_rude_rhyme(word, cache):
     # takes a word and finds rude rhyme, returns rude subsititue or None if none found
-    return cache.get(word, word)
+    result = cache.get(word, word)
+    if result == word:
+        return result
+    return f'\x1b[1m{result}\x1b[0m'
 
 
 def get_all_rhymes(word):
