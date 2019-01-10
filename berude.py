@@ -1,4 +1,5 @@
 import re
+import time
 import sys
 
 import requests
@@ -49,21 +50,22 @@ def get_all_rhymes(word):
     return rhyming_words
 
 
-def load_sonnet():
+def get_sonnets():
     result = requests.get("http://lib.ru/SHAKESPEARE/sonnets.txt")
     html = result.content
     soup = BeautifulSoup(html, features="lxml")
     text = soup.get_text()
     textlist = text.split("\n")
     textiter = iter(textlist)
-
     sonnet = False
     while not sonnet:
         line = next(textiter)
         if "Sonnet " in line:
             sonnet = True
     next(textiter)
+    return textiter
 
+def load_sonnet(textiter):
     poem = []
     while True:
         line = next(textiter)
@@ -73,7 +75,7 @@ def load_sonnet():
             break
     poem.pop()
 
-    poemsplit = [x.split(" ") for x in poem]
+    poemsplit = [x.split(" ") for x in poem if x.strip()]
     return poemsplit
 
 
@@ -87,15 +89,22 @@ def replace_words(sonnet, cache):
 
 
 def main():
-    sonnet = load_sonnet()
+    textiter = get_sonnets()
     # print(re quests.get("https://api.datamuse.com/words", params={'rel_rhy': 'cat'}).json())
+    print("PRECACHING...")
     cache = {}
     for word in rude_words:
         for rhyme in get_all_rhymes(word):
-            cache[rhyme] = word
-    rude_sonnet = replace_words(sonnet, cache)
-    for line in rude_sonnet:
-        print(" ".join(line))
+           cache[rhyme] = word
+
+    while True:
+        print("---")
+        sonnet = load_sonnet(textiter)
+        rude_sonnet = replace_words(sonnet, cache)
+        joined = "\n".join(" ".join(l) for l in rude_sonnet)
+        if '\x1b' in joined:
+            print(joined)
+            input()
 
 
 if __name__ == '__main__':
